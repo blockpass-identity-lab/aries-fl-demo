@@ -60,8 +60,45 @@ else
 	exit 1
 fi
 
+# if [ -z "${PWD_HOST_FQDN}" ]; then
+# 	DOCKERHOST=`docker run --rm --net=host codenvy/che-ip`
+#     export RUNMODE="docker"
+#
+# Backup
+#
+#
 if [ -z "${PWD_HOST_FQDN}" ]; then
-	DOCKERHOST=`docker run --rm --net=host codenvy/che-ip`
+	#if MacOS
+	if [ $OSTYPE == 'darwin' ]; then
+    export ETH_CONFIG="en0"
+	MY_HOST=`ifconfig ${ETH_CONFIG} | awk 'FNR == 5  {print $2}'`
+	#if Linux OS 
+	elif [ $OSTYPE == 'linux-gnu' ]; then
+	export ETH_CONFIG="ens33" #My VM's network card name is 'ens33'. Normally this should be 'eth0'.
+	MY_HOST=`ifconfig ${ETH_CONFIG} | awk 'FNR == 2 {print $2}'`
+	else
+		echo 'Windows'
+	fi
+
+	# Commands derived from the following:
+	#
+	# if [[ "$OSTYPE" == "linux-gnu" ]]; then
+	#         # ...
+	# elif [[ "$OSTYPE" == "darwin"* ]]; then
+	#         # Mac OSX
+	# elif [[ "$OSTYPE" == "cygwin" ]]; then
+	#         # POSIX compatibility layer and Linux environment emulation for Windows
+	# elif [[ "$OSTYPE" == "msys" ]]; then
+	#         # Lightweight shell and GNU utilities compiled for Windows (part of MinGW)
+	# elif [[ "$OSTYPE" == "win32" ]]; then
+	#         # I'm not sure this can happen.
+	# elif [[ "$OSTYPE" == "freebsd"* ]]; then
+	#         # ...
+	# else
+	#         # Unknown.
+	# fi
+
+	DOCKERHOST="${MY_HOST}"
     export RUNMODE="docker"
 else
 	PWD_HOST="${PWD_HOST_FQDN}"

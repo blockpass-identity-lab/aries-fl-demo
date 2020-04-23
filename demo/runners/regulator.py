@@ -162,7 +162,7 @@ async def main(start_port: int, show_timing: bool = False):
         with log_timer("Generate invitation duration:"):
             # Generate an invitation
             log_status(
-                "#5 Create a connection to Hospital and print out the invite details"
+                "#5 Create a connection to a Coordinator and print out the invite details"
             )
             connection = await agent.admin_POST("/connections/create-invitation")
 
