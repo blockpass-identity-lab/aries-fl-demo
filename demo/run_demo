@@ -74,7 +74,7 @@ if [ -z "${PWD_HOST_FQDN}" ]; then
 	MY_HOST=`ifconfig ${ETH_CONFIG} | awk 'FNR == 5  {print $2}'`
 	#if Linux OS 
 	elif [ $OSTYPE == 'linux-gnu' ]; then
-	export ETH_CONFIG="ens33" #My VM's network card name is 'ens33'. Normally this should be 'eth0'.
+	export ETH_CONFIG="lo" #My VM's network card name is 'lo'. Normally this should be 'eth0'.
 	MY_HOST=`ifconfig ${ETH_CONFIG} | awk 'FNR == 2 {print $2}'`
 	else
 		echo 'Windows'
